@@ -63,3 +63,7 @@ message Profile {
   int32 current_streak = 6;
   int32 xp_points = 7;
 }
+
+message ProfileResponse {
+  Profile profile = 1;
+}
