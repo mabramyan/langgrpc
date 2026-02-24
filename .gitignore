@@ -1,0 +1,25 @@
+# Generated code
+go/
+ts/
+
+# Build artifacts
+*.pb.go
+*.pb.gw.go
+*_grpc.pb.go
+
+# Node modules (for TS generation)
+node_modules/
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env

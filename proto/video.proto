@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package linguistglass;
+
+option go_package = "github.com/mabramyan/langgrpc/go/linguistglass";
+
+// VideoService handles YouTube video integration for contextual learning
+service VideoService {
+  // FindSentencesInVideo finds video clips containing a keyword
+  rpc FindSentencesInVideo (FindSentencesRequest) returns (VideoClipListResponse);
+  // SyncShadowingProgress syncs shadowing practice results
+  rpc SyncShadowingProgress (ShadowingProgressRequest) returns (ShadowingFeedbackResponse);
+}
+
+message FindSentencesRequest {
+  string keyword = 1;
+  int32 limit = 2;
+}
+
+message ShadowingProgressRequest {
+  string user_id = 1;
+  string word_id = 2;
+  float accuracy = 3; // 0.0 - 1.0
+  int32 attempts = 4;
+  int64 timestamp = 5;
+}
+
+message VideoClip {
+  string video_id = 1;
+  string title = 2;
+  string channel = 3;
+  int32 start_time = 4; // Seconds
+  int32 end_time = 5;
+  string subtitle_en = 6;
+  string subtitle_ru = 7;
+  string thumbnail_url = 8;
+}
+
+message ShadowingFeedback {
+  float overall_accuracy = 1;
+  repeated WordAccuracy word_accuracies = 2;
+}
+
+message WordAccuracy {
+  string word = 1;
+  float accuracy = 2; // 0.0 - 1.0
+  string feedback = 3; // "good", "needs_improvement", etc.
+}
+
+message VideoClipListResponse {
+  repeated VideoClip clips = 1;
+  int32 total_results = 2;
+}
+
+message ShadowingFeedbackResponse {
+  ShadowingFeedback feedback = 1;
+  int32 xp_earned = 2;
+}

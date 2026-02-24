@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package linguistglass;
+
+option go_package = "github.com/mabramyan/langgrpc/go/linguistglass";
+
+// AuthService handles user authentication and profile management
+service AuthService {
+  // Register creates a new user account
+  rpc Register (RegisterRequest) returns (AuthResponse);
+  // Login authenticates a user and returns tokens
+  rpc Login (LoginRequest) returns (AuthResponse);
+  // RefreshToken refreshes an expired access token
+  rpc RefreshToken (RefreshTokenRequest) returns (TokenResponse);
+  // GetProfile retrieves user profile information
+  rpc GetProfile (GetProfileRequest) returns (ProfileResponse);
+}
+
+message HandshakeRequest {
+  string app_version = 1;
+  string platform = 2; // "ios", "android", "web"
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+  string native_language = 4;
+  string target_language = 5;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message GetProfileRequest {
+  string user_id = 1;
+}
+
+message AuthResponse {
+  string user_id = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+  Profile profile = 4;
+}
+
+message TokenResponse {
+  string access_token = 1;
+  int64 expires_at = 2;
+}
+
+message Profile {
+  string user_id = 1;
+  string name = 2;
+  string avatar_url = 3;
+  string native_language = 4;
+  string target_language = 5;
+  int32 current_streak = 6;
+  int32 xp_points = 7;
+}

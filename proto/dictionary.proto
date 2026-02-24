@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package linguistglass;
+
+option go_package = "github.com/mabramyan/langgrpc/go/linguistglass";
+
+// DictionaryService handles dictionary and word management
+service DictionaryService {
+  // SearchWords searches for words matching a query
+  rpc SearchWords (SearchWordsRequest) returns (WordListResponse);
+  // GetWordDetail retrieves detailed information about a word
+  rpc GetWordDetail (GetWordDetailRequest) returns (WordDetailResponse);
+  // CreateUserDictionary creates a new user dictionary
+  rpc CreateUserDictionary (CreateDictionaryRequest) returns (DictionaryResponse);
+  // ListDictionaries retrieves dictionaries by level or user
+  rpc ListDictionaries (ListDictionariesRequest) returns (DictionaryListResponse);
+  // AddWordToDictionary adds a word to a dictionary
+  rpc AddWordToDictionary (AddWordToDictionaryRequest) returns (DictionaryResponse);
+}
+
+message SearchWordsRequest {
+  string query = 1;
+  int32 limit = 2;
+}
+
+message GetWordDetailRequest {
+  string word_id = 1;
+}
+
+message CreateDictionaryRequest {
+  string name = 1;
+  string level = 2; // A1, A2, B1, B2, C1, C2
+  bool is_public = 3;
+}
+
+message ListDictionariesRequest {
+  string level = 1;
+  string user_id = 2;
+  bool include_public = 3;
+}
+
+message AddWordToDictionaryRequest {
+  string dictionary_id = 1;
+  string word_id = 2;
+}
+
+message Word {
+  string id = 1;
+  string headword = 2;
+  string part_of_speech = 3;
+  string transcription = 4;
+}
+
+message Definition {
+  string id = 1;
+  string word_id = 2;
+  string language = 3;
+  string text = 4;
+  string contextual_note = 5;
+}
+
+message Example {
+  string id = 1;
+  string word_id = 2;
+  string text = 3;
+  string translation = 4;
+  optional string video_source_id = 5;
+  optional int32 timestamp = 6;
+}
+
+message WordDetail {
+  Word word = 1;
+  repeated Definition definitions = 2;
+  repeated Example examples = 3;
+}
+
+message Dictionary {
+  string id = 1;
+  string name = 2;
+  string creator_id = 3;
+  string level = 4;
+  bool is_public = 5;
+  int32 word_count = 6;
+}
+
+message WordListResponse {
+  repeated Word words = 1;
+}
+
+message WordDetailResponse {
+  WordDetail word_detail = 1;
+}
+
+message DictionaryResponse {
+  Dictionary dictionary = 1;
+}
+
+message DictionaryListResponse {
+  repeated Dictionary dictionaries = 1;
+}
