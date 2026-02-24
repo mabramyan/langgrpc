@@ -5,7 +5,7 @@
 set -e
 
 PROTO_DIR="./proto"
-GO_OUT="./go"
+GO_OUT="./go/linguistglass"
 
 echo "Generating Go gRPC code..."
 
